@@ -8,20 +8,66 @@
 
 import UIKit
 
-class RemindersViewController: UITableViewController {
-
+class RemindersViewController: UIViewController {
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    var reminderList: ReminderList
+    
+    // called when VC is initialized from storyboard
+    required init?(coder: NSCoder) {
+        reminderList = ReminderList()
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+    func configureCheckmark(for cell: UITableViewCell, with reminder: Reminder) {
+        if reminder.checked {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath)
-        return cell
+    func configureText(for cell: UITableViewCell, with reminder: Reminder) {
+        if let label = cell.viewWithTag(1000) as? UILabel {
+            label.text = reminder.name
+        }
     }
 }
 
+extension RemindersViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let reminder = reminderList.reminders[indexPath.row]
+        reminder.toggleChecked() // model's method
+        if let cell = tableView.cellForRow(at: indexPath) {
+            configureCheckmark(for: cell, with: reminder)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension RemindersViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return reminderList.reminders.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath)
+        let reminder = reminderList.reminders[indexPath.row]
+        configureText(for: cell, with: reminder)
+        configureCheckmark(for: cell, with: reminder)
+        
+        return cell
+    }
+}
