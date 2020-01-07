@@ -14,6 +14,9 @@ class RemindersViewController: UIViewController {
     
     var reminderList: ReminderList
     
+    @IBAction func addItem(_ sender: Any) {
+        
+    }
     // called when VC is initialized from storyboard
     required init?(coder: NSCoder) {
         reminderList = ReminderList()
@@ -25,6 +28,19 @@ class RemindersViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Reminders"
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
+    }
+    
+    @objc func addItem() {
+        print(#function)
+        let arrayCount = reminderList.reminders.count
+        _ = reminderList.newReminder()
+        let indexPath = IndexPath(row: arrayCount, section: 0)
+        tableView.insertRows(at: [indexPath], with: .left)
+        //tableView.reloadData()
     }
     
     func configureCheckmark(for cell: UITableViewCell, with reminder: Reminder) {
@@ -52,6 +68,12 @@ extension RemindersViewController: UITableViewDelegate {
             configureCheckmark(for: cell, with: reminder)
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        print(#function)
+        reminderList.reminders.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 }
 

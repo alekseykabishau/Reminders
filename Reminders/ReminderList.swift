@@ -31,4 +31,18 @@ class ReminderList {
         reminders.append(reminder4)
         reminders.append(reminder5)
     }
+    
+    func newReminder() -> Reminder {
+        print(#function)
+        let reminder = Reminder()
+        reminder.name = randomTitle()
+        reminders.append(reminder)
+        return reminder
+    }
+    
+    private func randomTitle() -> String {
+        let titles = ["New Reminder 1", "New Reminder 2", "New Reminder 3", "New Reminder 4", "New Reminder 5", "New Reminder 6"]
+        let randomNumber = Int.random(in: 0...titles.count - 1)
+        return titles[randomNumber]
+    }
 }
