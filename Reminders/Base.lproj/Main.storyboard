@@ -57,7 +57,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ioa-U4-fQf">
                             <connections>
                                 <action selector="addItem:" destination="Dy3-Zd-Vv9" id="MqG-BQ-3wN"/>
-                                <segue destination="YQn-H9-RNX" kind="show" id="PaK-mz-uhH"/>
+                                <segue destination="YQn-H9-RNX" kind="show" identifier="AddReminderSegue" id="PaK-mz-uhH"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

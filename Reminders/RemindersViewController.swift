@@ -75,6 +75,14 @@ extension RemindersViewController: UITableViewDelegate {
         reminderList.reminders.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddReminderSegue" {
+            if let addReminderViewController = segue.destination as? AddReminderController {
+                addReminderViewController.delegate = self
+            }
+        }
+    }
 }
 
 extension RemindersViewController: UITableViewDataSource {
@@ -92,4 +100,23 @@ extension RemindersViewController: UITableViewDataSource {
         
         return cell
     }
+}
+
+extension RemindersViewController: AddReminderControllerDelegate {
+    func addReminderControllerDidCancel(_ viewController: AddReminderController) {
+        print(#function)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func addReminderController(_ viewController: AddReminderController, didFinishAdding item: Reminder) {
+        print(#function)
+        navigationController?.popViewController(animated: true)
+        
+        let rowIndex = reminderList.reminders.count
+        reminderList.reminders.append(item)
+        let indexPath = IndexPath(row: rowIndex, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    
 }

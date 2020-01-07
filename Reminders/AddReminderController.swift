@@ -8,20 +8,37 @@
 
 import UIKit
 
+protocol AddReminderControllerDelegate: class {
+    func addReminderControllerDidCancel(_ viewController: AddReminderController)
+    func addReminderController(_ viewController: AddReminderController, didFinishAdding item: Reminder)
+}
+
 class AddReminderController: UITableViewController {
 
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
+    weak var delegate: AddReminderControllerDelegate?
+    
     @IBAction func cancelButtonTapped(_ sender: Any) {
         print(#function)
         navigationController?.popViewController(animated: true)
+        
+        delegate?.addReminderControllerDidCancel(self)
     }
     
     @IBAction func saveButtonTapped(_ sender: Any) {
         print(#function)
         navigationController?.popViewController(animated: true)
+        
+        let reminder = Reminder()
+        if let text = textField.text {
+            reminder.name = text
+            reminder.checked = false
+        }
+        
+        delegate?.addReminderController(self, didFinishAdding: reminder)
     }
     
     override func viewDidLoad() {
