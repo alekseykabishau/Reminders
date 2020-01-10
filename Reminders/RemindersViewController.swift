@@ -44,10 +44,13 @@ class RemindersViewController: UIViewController {
     }
     
     func configureCheckmark(for cell: UITableViewCell, with reminder: Reminder) {
+        guard let checkmarkLabel = cell.viewWithTag(1001) as? UILabel else { return }
         if reminder.checked {
-            cell.accessoryType = .checkmark
+            checkmarkLabel.text = "√"
+            //cell.accessoryType = .checkmark
         } else {
-            cell.accessoryType = .none
+            checkmarkLabel.text = ""
+            //cell.accessoryType = .none
         }
     }
     
@@ -78,8 +81,20 @@ extension RemindersViewController: UITableViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddReminderSegue" {
-            if let addReminderViewController = segue.destination as? AddReminderController {
+            if let addReminderViewController = segue.destination as? ReminderDetailsController {
                 addReminderViewController.delegate = self
+                addReminderViewController.reminderList = reminderList
+            }
+        } else if segue.identifier == "EditReminderSegue" {
+            if let addReminderViewController = segue.destination as? ReminderDetailsController {
+                //getting the item from the sender which is table view cell
+                if let cell = sender as? UITableViewCell {
+                    if let indexPath = tableView.indexPath(for: cell) {
+                        let reminder = reminderList.reminders[indexPath.row]
+                        addReminderViewController.reminderToEdit = reminder
+                        addReminderViewController.delegate = self
+                    }
+                }
             }
         }
     }
@@ -102,21 +117,32 @@ extension RemindersViewController: UITableViewDataSource {
     }
 }
 
-extension RemindersViewController: AddReminderControllerDelegate {
-    func addReminderControllerDidCancel(_ viewController: AddReminderController) {
+extension RemindersViewController: ReminderDetailsControllerDelegate {
+    
+    func reminderDetailsControllerDidCancel(_ viewController: ReminderDetailsController) {
         print(#function)
         navigationController?.popViewController(animated: true)
     }
     
-    func addReminderController(_ viewController: AddReminderController, didFinishAdding item: Reminder) {
+    func reminderDetailsController(_ viewController: ReminderDetailsController, didFinishAdding item: Reminder) {
         print(#function)
         navigationController?.popViewController(animated: true)
         
-        let rowIndex = reminderList.reminders.count
-        reminderList.reminders.append(item)
+        let rowIndex = reminderList.reminders.count - 1
+        //reminderList.reminders.append(item)
         let indexPath = IndexPath(row: rowIndex, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
-    
+    func reminderDetailsController(_ viewController: ReminderDetailsController, didFinishEditing item: Reminder) {
+        print(#function)
+        navigationController?.popViewController(animated: true)
+        
+        if let index = reminderList.reminders.firstIndex(of: item) {
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                configureText(for: cell, with: item)
+            }
+        }
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  AddReminderController.swift
+//  ReminderDetailsController.swift
 //  Reminders
 //
 //  Created by Aleksey on 0105..20.
@@ -8,47 +8,61 @@
 
 import UIKit
 
-protocol AddReminderControllerDelegate: class {
-    func addReminderControllerDidCancel(_ viewController: AddReminderController)
-    func addReminderController(_ viewController: AddReminderController, didFinishAdding item: Reminder)
+protocol ReminderDetailsControllerDelegate: class {
+    func reminderDetailsControllerDidCancel(_ viewController: ReminderDetailsController)
+    func reminderDetailsController(_ viewController: ReminderDetailsController, didFinishAdding item: Reminder)
+    func reminderDetailsController(_ viewController: ReminderDetailsController, didFinishEditing item: Reminder)
 }
 
-class AddReminderController: UITableViewController {
+class ReminderDetailsController: UITableViewController {
 
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
-    weak var delegate: AddReminderControllerDelegate?
+    weak var delegate: ReminderDetailsControllerDelegate?
+    weak var reminderList: ReminderList?
+    weak var reminderToEdit: Reminder?
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         print(#function)
-        navigationController?.popViewController(animated: true)
-        
-        delegate?.addReminderControllerDidCancel(self)
+        delegate?.reminderDetailsControllerDidCancel(self)
     }
     
     @IBAction func saveButtonTapped(_ sender: Any) {
         print(#function)
-        navigationController?.popViewController(animated: true)
         
-        let reminder = Reminder()
-        if let text = textField.text {
-            reminder.name = text
-            reminder.checked = false
+        if let reminderToEdit = reminderToEdit {
+            if let text = textField.text {
+                reminderToEdit.name = text
+                delegate?.reminderDetailsController(self, didFinishEditing: reminderToEdit)
+            }
+        } else {
+            if let reminder = reminderList?.newReminder() {
+                if let text = textField.text {
+                    reminder.name = text
+                    reminder.checked = false
+                }
+                delegate?.reminderDetailsController(self, didFinishAdding: reminder)
+            }
         }
         
-        delegate?.addReminderController(self, didFinishAdding: reminder)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = "Add Reminder"
-        
         textField.delegate = self
         
+        // if there is an reminder to edit - it's editing mode
+        if let reminderToEdit = reminderToEdit {
+            navigationItem.title = "Update Reminder"
+            textField.text = reminderToEdit.name
+        } else {
+            navigationItem.title = "Add Reminder"
+            
+        }
     }
     
     // in order to show keyboard right away and put cursor into text field
@@ -63,7 +77,7 @@ class AddReminderController: UITableViewController {
     }
 }
 
-extension AddReminderController: UITextFieldDelegate {
+extension ReminderDetailsController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

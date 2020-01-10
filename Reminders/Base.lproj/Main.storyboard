@@ -19,27 +19,45 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="ReminderCell" id="z1d-3Z-Tms">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="53"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="ReminderCell" id="z1d-3Z-Tms">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="31.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="z1d-3Z-Tms" id="XBE-sG-ms0">
-                                            <rect key="frame" x="0.0" y="0.0" width="370" height="53"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="351" height="31.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="McX-LO-wbw">
-                                                    <rect key="frame" x="30" y="16" width="322" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="nWg-ET-2yg">
+                                                    <rect key="frame" x="15" y="5" width="321" height="21.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="1001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="√" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8XT-el-fc4">
+                                                            <rect key="frame" x="0.0" y="0.0" width="21" height="21.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="21" id="KIc-1w-Qkv"/>
+                                                                <constraint firstAttribute="height" constant="21" id="tbe-YX-5NS"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="McX-LO-wbw">
+                                                            <rect key="frame" x="36" y="0.0" width="285" height="21.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="McX-LO-wbw" firstAttribute="leading" secondItem="XBE-sG-ms0" secondAttribute="leadingMargin" constant="10" id="0EX-CZ-3j8"/>
-                                                <constraint firstItem="McX-LO-wbw" firstAttribute="top" secondItem="XBE-sG-ms0" secondAttribute="topMargin" priority="750" constant="5" id="PhX-pa-Nu8"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="McX-LO-wbw" secondAttribute="bottom" priority="750" constant="5" id="UDU-1f-OCV"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="McX-LO-wbw" secondAttribute="trailing" constant="10" id="aFU-X6-b1v"/>
+                                                <constraint firstAttribute="bottom" secondItem="nWg-ET-2yg" secondAttribute="bottom" constant="5" id="Qep-uL-Wmy"/>
+                                                <constraint firstItem="nWg-ET-2yg" firstAttribute="leading" secondItem="XBE-sG-ms0" secondAttribute="leading" constant="15" id="WGP-If-hN0"/>
+                                                <constraint firstItem="nWg-ET-2yg" firstAttribute="top" secondItem="XBE-sG-ms0" secondAttribute="top" constant="5" id="fcg-FV-Uj0"/>
+                                                <constraint firstAttribute="trailing" secondItem="nWg-ET-2yg" secondAttribute="trailing" constant="15" id="j3i-8D-6VX"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="YQn-H9-RNX" kind="show" identifier="EditReminderSegue" trigger="accessoryAction" id="8Dh-da-IZc"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -69,10 +87,10 @@
             </objects>
             <point key="canvasLocation" x="947.82608695652186" y="20.758928571428569"/>
         </scene>
-        <!--Add Reminder Controller-->
+        <!--Reminder Details Controller-->
         <scene sceneID="EKF-aU-SIU">
             <objects>
-                <tableViewController id="YQn-H9-RNX" customClass="AddReminderController" customModule="Reminders" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="YQn-H9-RNX" customClass="ReminderDetailsController" customModule="Reminders" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="oFV-qA-voW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -145,4 +163,7 @@
             <point key="canvasLocation" x="37.681159420289859" y="20.758928571428569"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="8Dh-da-IZc"/>
+    </inferredMetricsTieBreakers>
 </document>
