@@ -31,7 +31,12 @@ class RemindersViewController: UIViewController {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Reminders"
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
+        navigationItem.leftBarButtonItem = editButtonItem
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: true)
+        tableView.setEditing(isEditing, animated: true)
     }
     
     @objc func addItem() {
@@ -93,6 +98,11 @@ extension RemindersViewController: UITableViewDelegate {
         print(#function)
         reminderList.reminders.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        print(#function)
+        reminderList.move(item: reminderList.reminders[sourceIndexPath.row], at: destinationIndexPath.row)
     }
 }
 

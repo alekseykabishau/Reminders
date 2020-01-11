@@ -40,6 +40,14 @@ class ReminderList {
         return reminder
     }
     
+    func move(item: Reminder, at index: Int) {
+        print(#function)
+        guard let currentIndex = reminders.firstIndex(of: item) else { return }
+        reminders.remove(at: currentIndex)
+        reminders.insert(item, at: index)
+        
+    }
+    
     private func randomTitle() -> String {
         let titles = ["New Reminder 1", "New Reminder 2", "New Reminder 3", "New Reminder 4", "New Reminder 5", "New Reminder 6"]
         let randomNumber = Int.random(in: 0...titles.count - 1)
