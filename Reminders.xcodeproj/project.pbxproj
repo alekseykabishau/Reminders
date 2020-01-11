@@ -16,6 +16,7 @@
 		5B608E2F23BDA37900C82BFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B608E2E23BDA37900C82BFD /* Assets.xcassets */; };
 		5B608E3223BDA37900C82BFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B608E3023BDA37900C82BFD /* LaunchScreen.storyboard */; };
 		5B9497BC23C28A9B004CC79C /* ReminderDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9497BB23C28A9B004CC79C /* ReminderDetailsController.swift */; };
+		5BF570A223C9761300808C8F /* ReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF570A123C9761300808C8F /* ReminderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		5B608E3123BDA37900C82BFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5B608E3323BDA37900C82BFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B9497BB23C28A9B004CC79C /* ReminderDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailsController.swift; sourceTree = "<group>"; };
+		5BF570A123C9761300808C8F /* ReminderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				5B608E2523BDA37700C82BFD /* AppDelegate.swift */,
 				5B608E2723BDA37700C82BFD /* SceneDelegate.swift */,
 				5B608E2923BDA37700C82BFD /* RemindersViewController.swift */,
+				5BF570A123C9761300808C8F /* ReminderCell.swift */,
 				5B608E2B23BDA37700C82BFD /* Main.storyboard */,
 				5B608E2E23BDA37900C82BFD /* Assets.xcassets */,
 				5B608E3023BDA37900C82BFD /* LaunchScreen.storyboard */,
@@ -150,6 +153,7 @@
 				5B608E2A23BDA37700C82BFD /* RemindersViewController.swift in Sources */,
 				5B608E2623BDA37700C82BFD /* AppDelegate.swift in Sources */,
 				5B608E2823BDA37700C82BFD /* SceneDelegate.swift in Sources */,
+				5BF570A223C9761300808C8F /* ReminderCell.swift in Sources */,
 				5B9497BC23C28A9B004CC79C /* ReminderDetailsController.swift in Sources */,
 				5B0F447A23C0534D00CF5981 /* ReminderList.swift in Sources */,
 				5B0F447823C043CD00CF5981 /* Reminder.swift in Sources */,

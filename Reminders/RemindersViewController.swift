@@ -43,40 +43,17 @@ class RemindersViewController: UIViewController {
         //tableView.reloadData()
     }
     
-    func configureCheckmark(for cell: UITableViewCell, with reminder: Reminder) {
-        guard let checkmarkLabel = cell.viewWithTag(1001) as? UILabel else { return }
+    func configureCheckmark(for cell: ReminderCell, with reminder: Reminder) {
         if reminder.checked {
-            checkmarkLabel.text = "√"
-            //cell.accessoryType = .checkmark
+            cell.checkmarkLabel.text = "√"
         } else {
-            checkmarkLabel.text = ""
-            //cell.accessoryType = .none
+            cell.checkmarkLabel.text = ""
         }
     }
     
-    func configureText(for cell: UITableViewCell, with reminder: Reminder) {
-        if let label = cell.viewWithTag(1000) as? UILabel {
-            label.text = reminder.name
-        }
-    }
-}
+    func configureText(for cell: ReminderCell, with reminder: Reminder) {
+        cell.titleLabel.text = reminder.name
 
-extension RemindersViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let reminder = reminderList.reminders[indexPath.row]
-        reminder.toggleChecked() // model's method
-        if let cell = tableView.cellForRow(at: indexPath) {
-            configureCheckmark(for: cell, with: reminder)
-        }
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        print(#function)
-        reminderList.reminders.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -100,6 +77,25 @@ extension RemindersViewController: UITableViewDelegate {
     }
 }
 
+extension RemindersViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let reminder = reminderList.reminders[indexPath.row]
+        reminder.toggleChecked() // model's method
+        if let cell = tableView.cellForRow(at: indexPath) as? ReminderCell {
+            configureCheckmark(for: cell, with: reminder)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        print(#function)
+        reminderList.reminders.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+}
+
 extension RemindersViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,11 +104,10 @@ extension RemindersViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath) as! ReminderCell
         let reminder = reminderList.reminders[indexPath.row]
         configureText(for: cell, with: reminder)
         configureCheckmark(for: cell, with: reminder)
-        
         return cell
     }
 }
@@ -140,7 +135,7 @@ extension RemindersViewController: ReminderDetailsControllerDelegate {
         
         if let index = reminderList.reminders.firstIndex(of: item) {
             let indexPath = IndexPath(row: index, section: 0)
-            if let cell = tableView.cellForRow(at: indexPath) {
+            if let cell = tableView.cellForRow(at: indexPath) as? ReminderCell {
                 configureText(for: cell, with: item)
             }
         }
