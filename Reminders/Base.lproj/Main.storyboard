@@ -73,16 +73,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Tqd-6U-9Ih"/>
                     </view>
-                    <navigationItem key="navigationItem" id="9ke-Ae-lwK">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ioa-U4-fQf">
-                            <connections>
-                                <action selector="addItem:" destination="Dy3-Zd-Vv9" id="MqG-BQ-3wN"/>
-                                <segue destination="YQn-H9-RNX" kind="show" identifier="AddReminderSegue" id="PaK-mz-uhH"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="9ke-Ae-lwK"/>
                     <connections>
                         <outlet property="tableView" destination="End-hV-0aj" id="5tf-wq-s3f"/>
+                        <segue destination="YQn-H9-RNX" kind="show" identifier="AddReminderSegue" id="1gY-MU-7g3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLT-fV-jHR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -166,6 +160,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="8Dh-da-IZc"/>
+        <segue reference="1gY-MU-7g3"/>
     </inferredMetricsTieBreakers>
 </document>

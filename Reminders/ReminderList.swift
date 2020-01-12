@@ -45,7 +45,15 @@ class ReminderList {
         guard let currentIndex = reminders.firstIndex(of: item) else { return }
         reminders.remove(at: currentIndex)
         reminders.insert(item, at: index)
-        
+    }
+    
+    func remove(items: [Reminder]) {
+        print(#function)
+        for item in items {
+            if let index = reminders.firstIndex(of: item) {
+                reminders.remove(at: index)
+            }
+        }
     }
     
     private func randomTitle() -> String {

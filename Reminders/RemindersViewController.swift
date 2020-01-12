@@ -14,9 +14,6 @@ class RemindersViewController: UIViewController {
     
     var reminderList: ReminderList
     
-    @IBAction func addItem(_ sender: Any) {
-        
-    }
     // called when VC is initialized from storyboard
     required init?(coder: NSCoder) {
         reminderList = ReminderList()
@@ -28,24 +25,43 @@ class RemindersViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.allowsMultipleSelectionDuringEditing = true
         
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Reminders"
         navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: true)
         tableView.setEditing(isEditing, animated: true)
+        if isEditing {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(deleteSelected))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
+        }
+    }
+    
+    @objc func deleteSelected() {
+        print(#function)
+        if let indexPaths = tableView.indexPathsForSelectedRows {
+            var selectedReminders = [Reminder]()
+            for indexPath in indexPaths {
+                selectedReminders.append(reminderList.reminders[indexPath.row])
+            }
+            reminderList.remove(items: selectedReminders)
+            // batch updates of table view
+            tableView.beginUpdates()
+            tableView.deleteRows(at: indexPaths, with: .automatic)
+            tableView.endUpdates()
+        }
     }
     
     @objc func addItem() {
         print(#function)
-        let arrayCount = reminderList.reminders.count
-        _ = reminderList.newReminder()
-        let indexPath = IndexPath(row: arrayCount, section: 0)
-        tableView.insertRows(at: [indexPath], with: .left)
-        //tableView.reloadData()
+        // TODO: call prepare for segue with identifier + changes in storyboard
+        performSegue(withIdentifier: "AddReminderSegue", sender: self)
     }
     
     func configureCheckmark(for cell: ReminderCell, with reminder: Reminder) {
@@ -85,13 +101,14 @@ class RemindersViewController: UIViewController {
 extension RemindersViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let reminder = reminderList.reminders[indexPath.row]
-        reminder.toggleChecked() // model's method
-        if let cell = tableView.cellForRow(at: indexPath) as? ReminderCell {
-            configureCheckmark(for: cell, with: reminder)
+        if !tableView.isEditing {
+            let reminder = reminderList.reminders[indexPath.row]
+            reminder.toggleChecked() // model's method
+            if let cell = tableView.cellForRow(at: indexPath) as? ReminderCell {
+                configureCheckmark(for: cell, with: reminder)
+            }
+            tableView.deselectRow(at: indexPath, animated: true)
         }
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
